@@ -7,6 +7,7 @@ import com.happizo.account.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,10 @@ public class ProjectService {
         Project project = new Project();
         applyDto(project, dto);
         project.setId(null);
+        if (project.getOrderType() != null && !project.getOrderType().isBlank()
+                && project.getOrderNumber() == null) {
+            project.setOrderNumber(generateOrderNumber(project.getOrderType()));
+        }
         validateBudget(project);
         return toDto(projectRepository.save(project));
     }
@@ -47,9 +52,29 @@ public class ProjectService {
     public ProjectDto update(Long id, ProjectDto dto) {
         Project existing = projectRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found: " + id));
+        String prevType = existing.getOrderType();
         applyDto(existing, dto);
+        // Generate number if orderType is newly set or changed
+        if (existing.getOrderType() != null && !existing.getOrderType().isBlank()
+                && (existing.getOrderNumber() == null || !existing.getOrderType().equals(prevType))) {
+            existing.setOrderNumber(generateOrderNumber(existing.getOrderType()));
+        }
         validateBudget(existing);
         return toDto(projectRepository.save(existing));
+    }
+
+    private String generateOrderNumber(String type) {
+        LocalDate today = LocalDate.now();
+        int month = today.getMonthValue();
+        int year  = today.getYear();
+        // Indian fiscal year: April–March
+        int fyStart = month >= 4 ? year : year - 1;
+        int fyEnd   = fyStart + 1;
+        String fy = String.format("%02d%02d", fyStart % 100, fyEnd % 100);
+
+        Integer maxSeq = projectRepository.findMaxOrderSequence();
+        int next = (maxSeq == null ? 0 : maxSeq) + 1;
+        return String.format("%s-%s-%03d", type.toUpperCase(), fy, next);
     }
 
     public void delete(Long id) {
@@ -163,6 +188,8 @@ public class ProjectService {
         dto.setClientAddress(p.getClientAddress());
         dto.setBillingAddress(p.getBillingAddress());
         dto.setPoWoStatus(p.getPoWoStatus());
+        dto.setOrderType(p.getOrderType());
+        dto.setOrderNumber(p.getOrderNumber());
         dto.setGstPct(p.getGstPct());
         dto.setQuoteGstPct(p.getQuoteGstPct());
         dto.setQuoteGross(safe(p.getQuoteGross()));
@@ -191,6 +218,7 @@ public class ProjectService {
         p.setClientAddress(dto.getClientAddress());
         p.setBillingAddress(dto.getBillingAddress());
         p.setPoWoStatus(dto.getPoWoStatus());
+        if (dto.getOrderType() != null) p.setOrderType(dto.getOrderType());
         p.setGstPct(dto.getGstPct());
         p.setQuoteGstPct(dto.getQuoteGstPct());
         if (dto.getQuoteGross() != null)         p.setQuoteGross(dto.getQuoteGross());

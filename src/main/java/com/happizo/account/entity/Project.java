@@ -26,6 +26,11 @@ public class Project {
     private String clientAddress;
     private String billingAddress;
     private String poWoStatus;
+    private String orderType;   // PO, WO, JO
+
+    @Column(unique = true)
+    private String orderNumber; // e.g. PO-2526-001 (auto-generated)
+
     private Integer gstPct;
     private Integer quoteGstPct;
 
@@ -82,6 +87,10 @@ public class Project {
     public void setBillingAddress(String billingAddress) { this.billingAddress = billingAddress; }
     public String getPoWoStatus() { return poWoStatus; }
     public void setPoWoStatus(String poWoStatus) { this.poWoStatus = poWoStatus; }
+    public String getOrderType() { return orderType; }
+    public void setOrderType(String orderType) { this.orderType = orderType; }
+    public String getOrderNumber() { return orderNumber; }
+    public void setOrderNumber(String orderNumber) { this.orderNumber = orderNumber; }
     public Integer getGstPct() { return gstPct; }
     public void setGstPct(Integer gstPct) { this.gstPct = gstPct; }
     public Integer getQuoteGstPct() { return quoteGstPct; }

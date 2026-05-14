@@ -16,6 +16,8 @@ public class ProjectDto {
     private String clientAddress;
     private String billingAddress;
     private String poWoStatus;
+    private String orderType;
+    private String orderNumber;
     private Integer gstPct;
     private Integer quoteGstPct;
     private BigDecimal quoteGross;
@@ -75,6 +77,10 @@ public class ProjectDto {
     public void setBillingAddress(String billingAddress) { this.billingAddress = billingAddress; }
     public String getPoWoStatus() { return poWoStatus; }
     public void setPoWoStatus(String poWoStatus) { this.poWoStatus = poWoStatus; }
+    public String getOrderType() { return orderType; }
+    public void setOrderType(String orderType) { this.orderType = orderType; }
+    public String getOrderNumber() { return orderNumber; }
+    public void setOrderNumber(String orderNumber) { this.orderNumber = orderNumber; }
     public Integer getGstPct() { return gstPct; }
     public void setGstPct(Integer gstPct) { this.gstPct = gstPct; }
     public Integer getQuoteGstPct() { return quoteGstPct; }
