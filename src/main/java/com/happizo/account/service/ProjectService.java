@@ -157,7 +157,17 @@ public class ProjectService {
         dto.setFy(p.getFy());
         dto.setStatus(p.getStatus());
         dto.setBusinessType(p.getBusinessType());
+        dto.setLocation(p.getLocation());
+        dto.setDescription(p.getDescription());
+        dto.setClientGstNo(p.getClientGstNo());
+        dto.setClientAddress(p.getClientAddress());
+        dto.setBillingAddress(p.getBillingAddress());
+        dto.setPoWoStatus(p.getPoWoStatus());
+        dto.setGstPct(p.getGstPct());
+        dto.setQuoteGstPct(p.getQuoteGstPct());
         dto.setQuoteGross(safe(p.getQuoteGross()));
+        dto.setQuoteValue(p.getQuoteValue());
+        dto.setTotalValue(p.getTotalValue());
         dto.setCollectionReceived(safe(p.getCollectionReceived()));
         dto.setExpenses(new ProjectDto.Expenses(
                 safe(p.getExpMaterial()),
@@ -175,7 +185,17 @@ public class ProjectService {
         if (dto.getFy() != null)                 p.setFy(dto.getFy());
         if (dto.getStatus() != null)             p.setStatus(dto.getStatus());
         if (dto.getBusinessType() != null)       p.setBusinessType(dto.getBusinessType());
+        p.setLocation(dto.getLocation());
+        p.setDescription(dto.getDescription());
+        p.setClientGstNo(dto.getClientGstNo());
+        p.setClientAddress(dto.getClientAddress());
+        p.setBillingAddress(dto.getBillingAddress());
+        p.setPoWoStatus(dto.getPoWoStatus());
+        p.setGstPct(dto.getGstPct());
+        p.setQuoteGstPct(dto.getQuoteGstPct());
         if (dto.getQuoteGross() != null)         p.setQuoteGross(dto.getQuoteGross());
+        p.setQuoteValue(dto.getQuoteValue());
+        p.setTotalValue(dto.getTotalValue());
         if (dto.getCollectionReceived() != null) p.setCollectionReceived(dto.getCollectionReceived());
         if (dto.getExpenses() != null) {
             ProjectDto.Expenses e = dto.getExpenses();

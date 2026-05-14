@@ -17,10 +17,26 @@ public class Project {
     private String client;
     private String fy;
     private String status;
-    private String businessType; // B2B, B2C
+    private String businessType;
+
+    // PWJ-aligned fields
+    private String location;
+    private String description;
+    private String clientGstNo;
+    private String clientAddress;
+    private String billingAddress;
+    private String poWoStatus;
+    private Integer gstPct;
+    private Integer quoteGstPct;
 
     @Column(precision = 15, scale = 2)
     private BigDecimal quoteGross = BigDecimal.ZERO;
+
+    @Column(precision = 15, scale = 2)
+    private BigDecimal quoteValue;
+
+    @Column(precision = 15, scale = 2)
+    private BigDecimal totalValue;
 
     @Column(precision = 15, scale = 2)
     private BigDecimal collectionReceived = BigDecimal.ZERO;
@@ -54,8 +70,28 @@ public class Project {
     public void setStatus(String status) { this.status = status; }
     public String getBusinessType() { return businessType; }
     public void setBusinessType(String businessType) { this.businessType = businessType; }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getClientGstNo() { return clientGstNo; }
+    public void setClientGstNo(String clientGstNo) { this.clientGstNo = clientGstNo; }
+    public String getClientAddress() { return clientAddress; }
+    public void setClientAddress(String clientAddress) { this.clientAddress = clientAddress; }
+    public String getBillingAddress() { return billingAddress; }
+    public void setBillingAddress(String billingAddress) { this.billingAddress = billingAddress; }
+    public String getPoWoStatus() { return poWoStatus; }
+    public void setPoWoStatus(String poWoStatus) { this.poWoStatus = poWoStatus; }
+    public Integer getGstPct() { return gstPct; }
+    public void setGstPct(Integer gstPct) { this.gstPct = gstPct; }
+    public Integer getQuoteGstPct() { return quoteGstPct; }
+    public void setQuoteGstPct(Integer quoteGstPct) { this.quoteGstPct = quoteGstPct; }
     public BigDecimal getQuoteGross() { return quoteGross; }
     public void setQuoteGross(BigDecimal quoteGross) { this.quoteGross = quoteGross; }
+    public BigDecimal getQuoteValue() { return quoteValue; }
+    public void setQuoteValue(BigDecimal quoteValue) { this.quoteValue = quoteValue; }
+    public BigDecimal getTotalValue() { return totalValue; }
+    public void setTotalValue(BigDecimal totalValue) { this.totalValue = totalValue; }
     public BigDecimal getCollectionReceived() { return collectionReceived; }
     public void setCollectionReceived(BigDecimal collectionReceived) { this.collectionReceived = collectionReceived; }
     public BigDecimal getExpMaterial() { return expMaterial; }
