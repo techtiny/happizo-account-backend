@@ -6,14 +6,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findByStatus(String status);
 
+    Optional<Project> findByNameIgnoreCase(String name);
+
     @Query("SELECT MAX(CAST(SUBSTRING(p.orderNumber, 8) AS int)) FROM Project p WHERE p.orderNumber IS NOT NULL")
     Integer findMaxOrderSequence();
+
+    @Query(value = "SELECT COALESCE(MAX(CAST(SUBSTRING(project_code, 3) AS UNSIGNED)), 0) FROM projects WHERE project_code LIKE 'HP%'", nativeQuery = true)
+    Integer findMaxProjectCodeSequence();
 
     long countByStatus(String status);
 

@@ -14,6 +14,9 @@ public interface ExpenseItemRepository extends JpaRepository<ExpenseItem, Long> 
 
     List<ExpenseItem> findByProjectIdOrderByCategoryAscIdAsc(Long projectId);
 
+    @Query("SELECT e FROM ExpenseItem e WHERE e.category IS NULL OR e.category = ''")
+    List<ExpenseItem> findUncategorized();
+
     @Query("SELECT COALESCE(SUM(e.pwjTotalPayable), 0) FROM ExpenseItem e WHERE e.projectId = :projectId AND e.category = :category")
     BigDecimal sumPwjTotalPayable(Long projectId, String category);
 
@@ -37,4 +40,24 @@ public interface ExpenseItemRepository extends JpaRepository<ExpenseItem, Long> 
         GROUP BY e.category
         """)
     List<Object[]> getSummaryByProject(Long projectId);
+
+    // Returns a single row [sumPwjGst, sumVendorGst] for the whole project
+    @Query("""
+        SELECT COALESCE(SUM(e.pwjGstAmount), 0),
+               COALESCE(SUM(e.vendorGstAmount), 0)
+        FROM ExpenseItem e
+        WHERE e.projectId = :projectId
+        """)
+    List<Object[]> getGstTotalsByProject(Long projectId);
+
+    // Returns [projectId, category, sumPwjTotal, sumPaid] for all projects in one query
+    @Query("""
+        SELECT e.projectId,
+               e.category,
+               COALESCE(SUM(e.pwjTotalPayable), 0),
+               COALESCE(SUM(e.paidAmount), 0)
+        FROM ExpenseItem e
+        GROUP BY e.projectId, e.category
+        """)
+    List<Object[]> getSummaryAllProjects();
 }
